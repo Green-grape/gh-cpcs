@@ -1,0 +1,73 @@
+{
+    "name":"Dev container 이름",
+    "build": {
+        //컨테이너 기본 이미지 설정
+        "dockerfile": "./Dockerfile",
+        "context": ".",
+        "args": {
+          "VARIANT": "7.0"
+        }
+    },
+    "forwardPorts": [ 
+        //포트 포워딩(node, .NET, JAVA, ssr, http)
+        3000, 5000, 5001, 8080, 44380
+     ],
+    "features": {
+        //추가기능(순서는 모른다.)
+        // Azure CLI
+          "ghcr.io/devcontainers/features/azure-cli:latest": {
+            "version": "latest"
+          },
+  
+          // GitHub CLI
+          "ghcr.io/devcontainers/features/github-cli:latest": {
+            "version": "latest"
+          },
+      
+          // node.js
+          "ghcr.io/devcontainers/features/node:latest": {
+            "version": "lts",
+            "nodeGypDependencies": true,
+            "nvmInstallPath": "/usr/local/share/nvm"
+          },
+      
+          // common utilities(이게 가장 먼저 설치가 되야한다)
+          "ghcr.io/devcontainers/features/common-utils:latest": {
+            "installZsh": true,
+            "installOhMyZsh": true,
+            "upgradePackages": true,
+            "username": "vscode",
+            "uid": "1000",
+            "gid": "1000"
+          }
+    },
+    "overrideFeatureInstallOrder": [
+        "ghcr.io/devcontainers/features/common-utils"
+    ],
+    "customizations": {
+        "vscode":{
+            "extensions": [
+                // GitHub 코파일럿 관련(local과 연동될 수 있기 때문에 확실히 명시하자)
+                "GitHub.copilot",
+                "GitHub.copilot-labs",
+      
+                // C# 관련
+                "ms-dotnettools.vscode-dotnet-pack",
+                "kreativ-software.csharpextensions",
+      
+                // Azure 관련
+                "ms-vscode.vscode-node-azure-pack",
+                "ms-azuretools.vscode-bicep"
+              ],
+            "settings": {
+                "editor.minimap.enabled": false,
+                "explorer.fileNesting.enabled": true,
+                "explorer.sortOrder": "type"
+            }
+        }
+    },
+    //container가 만들어지자 마자
+    "postCreateCommand": "/bin/bash ./.devcontainer/post-create.sh > ~/post-create.log",
+  // DevContainer 사용자 계정
+    "remoteUser": "vscode"
+}
